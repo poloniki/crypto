@@ -78,7 +78,10 @@ def sentiment_analysis(tweets):
 
 
 # Input for multiple Twitter usernames
-usernames = st.text_area("Insert Twitter usernames (comma-separated)")
+usernames = st.text_area(
+    "Insert Twitter usernames (comma-separated)",
+    value="brian_armstrong,vitalikbuterin,APompliano",
+)
 
 # Button to trigger analysis
 button = st.button("Analyze Tweets")
