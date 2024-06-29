@@ -5,7 +5,6 @@ from textblob import TextBlob
 import pandas as pd
 import numpy as np
 from collections import Counter
-import altair as alt
 
 # Secrets for API keys
 RAPID_KEY = st.secrets["RAPID_API_KEY"]
@@ -80,11 +79,11 @@ def sentiment_analysis(tweets):
 # Input for multiple Twitter usernames
 usernames = st.text_area(
     "Insert Twitter usernames (comma-separated)",
-    value="brian_armstrong,vitalikbuterin,APompliano",
+    value="brian_armstrong,vitalikbuterin,APompliano,RaoulGMI",
 )
 
 # Button to trigger analysis
-button = st.button("Analyze Tweets")
+button = st.button("Analyze last 40 Tweets of each account")
 
 # If button is pressed
 if button:
@@ -100,7 +99,33 @@ if button:
     if all_tweets:
         # Summarize tweets
         summary = summarize_tweets({"results": all_tweets})
-        st.text("Summary:\n" + summary)
+
+        # Styling for bullet points
+        styled_summary = (
+            """
+        <style>
+        ul {
+            list-style-type: disc;
+            margin-left: 20px;
+        }
+        li {
+            font-size: 16px;
+            line-height: 1.6;
+            color: #333;
+            margin-bottom: 10px;
+        }
+        </style>
+        <ul>
+        """
+            + "".join(
+                f"<li>{line.strip()}</li>"
+                for line in summary.split("\n")
+                if line.strip()
+            )
+            + "</ul>"
+        )
+
+        st.markdown(styled_summary, unsafe_allow_html=True)
 
         # Overall sentiment for each account
         sentiment_counts = {
